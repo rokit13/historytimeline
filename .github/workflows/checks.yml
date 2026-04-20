@@ -1,0 +1,86 @@
+name: Checks
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: apps/api
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mbstring, pdo_sqlite, sqlite3
+          coverage: none
+
+      - name: Install API dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Prepare test environment
+        run: php artisan key:generate --env=testing --ansi
+
+      - name: Run API tests
+        run: php artisan test
+
+  marketing-checks:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: apps/marketing
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/marketing/package-lock.json
+
+      - name: Install marketing dependencies
+        run: npm ci
+
+      - name: Lint marketing
+        run: npm run lint
+
+      - name: Build marketing
+        run: npm run build
+
+  app-checks:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: apps/app
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: apps/app/package-lock.json
+
+      - name: Install app dependencies
+        run: npm ci
+
+      - name: Lint app
+        run: npm run lint
+
+      - name: Build app
+        run: npm run build

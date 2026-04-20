@@ -1,0 +1,36 @@
+@import "tailwindcss";
+@import "../styles/flatpickr.css";
+@plugin "daisyui" {
+  themes: dim --default, light;
+}
+
+:root {
+  --grid-color: rgba(148, 163, 184, 0.08);
+}
+
+@theme inline {
+  --font-sans: "Avenir Next", "Segoe UI Variable", "Segoe UI", sans-serif;
+  --font-mono: "SFMono-Regular", "IBM Plex Mono", "Menlo", monospace;
+}
+
+html {
+  background:
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-position: center;
+  background-size: 3rem 3rem;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-sans), sans-serif;
+}
+
+input,
+button {
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    opacity 180ms ease;
+}

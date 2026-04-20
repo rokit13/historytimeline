@@ -1,0 +1,14 @@
+{
+  "name": "historytimeline",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:marketing": "playwright test tests/e2e/marketing.spec.ts",
+    "test:e2e:app": "playwright test tests/e2e/app.spec.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.2"
+  }
+}
