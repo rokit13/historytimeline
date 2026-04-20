@@ -1,6 +1,7 @@
 SHELL := /bin/zsh
+COMMIT_MSG ?= Update
 
-.PHONY: install api-install marketing-install app-install playwright-install api-dev marketing-dev app-dev dev api-clear api-test lint build test e2e
+.PHONY: install api-install marketing-install app-install playwright-install api-dev marketing-dev app-dev dev api-clear api-test lint build test e2e commit
 
 install: api-install marketing-install app-install playwright-install
 
@@ -46,3 +47,17 @@ e2e:
 	npm run test:e2e
 
 test: api-test
+
+commit:
+	git add .
+	@if git diff --cached --quiet; then \
+		echo "No changes to commit."; \
+	else \
+		git commit -m "$(COMMIT_MSG)"; \
+	fi
+	@branch=$$(git branch --show-current); \
+	if [ -z "$$branch" ]; then \
+		echo "Unable to determine the current git branch."; \
+		exit 1; \
+	fi; \
+	git push -u origin "$$branch"
